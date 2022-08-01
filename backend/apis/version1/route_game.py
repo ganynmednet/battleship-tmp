@@ -8,9 +8,9 @@ from db.repository.games import retrieve_game
 router = APIRouter()
 
 
-@router.get("/", response_model=Game)
-def get_board(id: str, db: Session = Depends(get_db)):
-    # get
+@router.get("/{id}", response_model=Game)
+def get_game(id: str, db: Session = Depends(get_db)):
+
     game = retrieve_game(id=id, db=db)
 
     if not game:

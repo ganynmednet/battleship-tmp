@@ -21,7 +21,8 @@ def test_create_user(client):
     assert response.json()["player2"] == "Rossman"
     assert response.json()["ended"] is False
 
-    response = client.get("/game/{}".format(response.json()["id"]))
+    print("/game/{}/".format(response.json()["id"]))
+    response = client.get("/game/{}/".format(response.json()["id"]))
     assert response.status_code == 200
     assert response.json()["player1"] == "Sergey"
     assert response.json()["player2"] == "Rossman"

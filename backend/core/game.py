@@ -9,6 +9,7 @@ if __name__ == "__main__":
         
     move
         retrieve game from db
+        
         move
         return hit
         switch game state
