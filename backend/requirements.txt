@@ -5,3 +5,8 @@ psycopg2
 python-dotenv
 pytest
 requests
+pydantic[email]
+passlib
+bcrypt
+python-jose
+dotenv

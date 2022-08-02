@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Any
 from typing import Optional
+from schemas.users import Player
 
 
 class Round(BaseModel):
@@ -9,16 +10,18 @@ class Round(BaseModel):
     grid_player1: list
     grid_player2: list
     next_turn: str
-    round_winner: str
+    round_winner: Optional[str]
     ended: str
 
 
 class Game(BaseModel):
     id: str
-    name_player1: str
-    name_player2: str
-    current_round_id: str # must be Round object
-    # current_round: Round
+    player1: Player
+    player2: Player
+    # current_round_id: str # must be Round object
+    current_round: Round
+    num_rounds: int
+    played_rounds: Optional[list]
     ended: bool
     game_winner: Optional[str]
 
@@ -34,11 +37,8 @@ class Ships(BaseModel):
 
 
 class GameCreate(BaseModel):
-    name_player1: str
-    name_player2: str
-    # board_size: int
+    player1_id: str
+    player2_id: str
     num_rounds: Optional[int]
     ships: Ships
-    # num_ships
-    # max_ship_size = 5
-    # min_ship_size = 2
+

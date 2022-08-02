@@ -29,18 +29,15 @@ class Json(TypeDecorator):
 class Game(Base):
     """
     https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html
+    https://hackersandslackers.com/sqlalchemy-data-models/
     """
     __tablename__ = 'game'
     id = Column(String, primary_key=True, index=True)
-    # grid_player1 = Column(JSON, nullable=False)
-    # grid_player2 = Column(JSON, nullable=False)
-    name_player1 = Column(String, nullable=False)
-    name_player2 = Column(String, nullable=False)
-    # move_turn = Column(String, nullable=True)
-    current_round_id = Column(String, ForeignKey("round.id"), nullable=False)
-    current_round = relationship("Round")
+    player1_id = Column(String, ForeignKey("user.id"))
+    player2_id = Column(String, ForeignKey("user.id"))
+    num_rounds = Column(Integer, nullable=False)
     ended = Column(Boolean(), default=False)
     game_winner = Column(String, nullable=True)
-    __mapper_args__ = {
-        "polymorphic_identity": "game"
-    }
+
+    player1 = relationship("User")
+    player2 = relationship("User")
