@@ -3,8 +3,9 @@
 if __name__ == "__main__":
     """
     create game
-        create round
-        store board in db
+        create round - done
+        create game - done
+        return game with current round
         set state router
         return auth tokens 
         

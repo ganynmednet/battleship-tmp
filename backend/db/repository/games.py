@@ -65,14 +65,11 @@ def retrieve_game(id: str, db: Session):
 
 
 def retrieve_round(id: str, db: Session):
-    # item = db.query(Game).filter(Round.id == id).first()
-    # item = db.query(Game)
 
-    # print(id)
     # print(db.query(Game).join(Round).filter(Game.id == id).where(Round.id == Game.current_round_id))
 
     item = db.query(Game).join(Round).filter(Game.id == id).where(Round.id == Game.current_round_id).first()
 
     # item = db.query(Game).join(Round).where(Round.id == Game.id).first()
-    print(item)
+    print(item.__dict__)
     return item
