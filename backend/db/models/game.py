@@ -27,6 +27,9 @@ class Json(TypeDecorator):
 
 
 class Game(Base):
+    """
+    https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html
+    """
     __tablename__ = 'game'
     id = Column(String, primary_key=True, index=True)
     # grid_player1 = Column(JSON, nullable=False)

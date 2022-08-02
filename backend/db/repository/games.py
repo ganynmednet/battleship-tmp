@@ -66,6 +66,8 @@ def retrieve_game(id: str, db: Session):
 
 def retrieve_round(id: str, db: Session):
 
+
+
     print(db.query(Game, Round).join(Round).filter(Game.id == id).where(Round.id == Game.current_round_id))
 
     item = db.query(Game, Round).join(Round).filter(Game.id == id).where(Round.id == Game.current_round_id).first()
