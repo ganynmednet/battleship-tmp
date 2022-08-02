@@ -35,7 +35,7 @@ class Game(Base):
     name_player2 = Column(String, nullable=False)
     # move_turn = Column(String, nullable=True)
     current_round_id = Column(String, ForeignKey("round.id"), nullable=False)
-    current_round = relationship("Round", foreign_keys=[current_round_id])
+    current_round = relationship("Round")
     ended = Column(Boolean(), default=False)
     game_winner = Column(String, nullable=True)
     __mapper_args__ = {

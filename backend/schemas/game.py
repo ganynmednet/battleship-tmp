@@ -17,7 +17,8 @@ class Game(BaseModel):
     id: str
     name_player1: str
     name_player2: str
-    current_round: str # must be Round object
+    current_round_id: str # must be Round object
+    # current_round: Round
     ended: bool
     game_winner: Optional[str]
 

@@ -11,11 +11,7 @@ router = APIRouter()
 @router.get("/{id}", response_model=Game)
 def get_game(id: str, db: Session = Depends(get_db)):
 
-    # game = retrieve_game(id=id, db=db)
-
     game = retrieve_round(id=id, db=db)
-    print("TEST ")
-    print(game)
 
     if not game:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Game with this id {id} does not exist")

@@ -15,7 +15,7 @@ def test_create_user(client):
     }
     response = client.post("/start/", json.dumps(data))
 
-    print(json.dumps(response.json()))
+    print(json.dumps(response.json(), indent=3))
     assert response.status_code == 200
     assert response.json()["name_player1"] == "Sergey"
     assert response.json()["name_player2"] == "Rossman"

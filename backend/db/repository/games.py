@@ -23,7 +23,7 @@ def create_new_game(settings: GameCreate, db: Session):
         id=game_id,
         name_player1=settings.name_player1,
         name_player2=settings.name_player2,
-        current_round=current_round_id[0],
+        current_round_id=current_round_id[0],
         ended=False,
         game_winner=None
 
@@ -68,6 +68,11 @@ def retrieve_round(id: str, db: Session):
     # item = db.query(Game).filter(Round.id == id).first()
     # item = db.query(Game)
 
-    item = db.query(Game).join(Round).where(Round.id == Game.id)
+    # print(id)
+    # print(db.query(Game).join(Round).filter(Game.id == id).where(Round.id == Game.current_round_id))
+
+    item = db.query(Game).join(Round).filter(Game.id == id).where(Round.id == Game.current_round_id).first()
+
+    # item = db.query(Game).join(Round).where(Round.id == Game.id).first()
     print(item)
     return item
