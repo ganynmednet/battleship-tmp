@@ -27,10 +27,17 @@ class Json(TypeDecorator):
 
 
 class Game(Base):
+    __tablename__ = 'game'
     id = Column(String, primary_key=True, index=True)
-    board = Column(JSON, nullable=False)
-    player1 = Column(String, nullable=False)
-    player2 = Column(String, nullable=False)
-    move_turn = Column(String, nullable=True)
+    # grid_player1 = Column(JSON, nullable=False)
+    # grid_player2 = Column(JSON, nullable=False)
+    name_player1 = Column(String, nullable=False)
+    name_player2 = Column(String, nullable=False)
+    # move_turn = Column(String, nullable=True)
+    current_round_id = Column(String, ForeignKey("round.id"), nullable=False)
+    current_round = relationship("Round", foreign_keys=[current_round_id])
     ended = Column(Boolean(), default=False)
-    winner = Column(String, nullable=True)
+    game_winner = Column(String, nullable=True)
+    __mapper_args__ = {
+        "polymorphic_identity": "game"
+    }
