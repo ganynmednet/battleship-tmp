@@ -7,27 +7,24 @@ from db.models.round import Round
 
 
 def create_new_game(settings: GameCreate, db: Session):
-    game_id = str(uuid.uuid4())
 
-    current_round_id = create_round(
-        game_id=game_id,
-        next_turn=random.choice([settings.name_player1, settings.name_player2]),
-        db=db
-    ),
-    # print(dir(current_round))
-    # print(type(current_round))
-    # # print(current_round.__getitem__("id"))
-    # print(current_round.__dict__)
+    game_id = str(uuid.uuid4())
 
     game = Game(
         id=game_id,
-        name_player1=settings.name_player1,
-        name_player2=settings.name_player2,
+        player1_id=settings.player1_id,
+        player2_id=settings.player2_id,
         num_rounds=settings.num_rounds,
         # current_round_id=current_round_id[0],
         ended=False,
         game_winner=None
 
+    )
+
+    create_round(
+        game_id=game_id,
+        next_turn=random.choice([settings.player1_id, settings.player2_id]),
+        db=db
     )
 
     # game.current_round = current_round

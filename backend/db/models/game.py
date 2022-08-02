@@ -39,5 +39,5 @@ class Game(Base):
     ended = Column(Boolean(), default=False)
     game_winner = Column(String, nullable=True)
 
-    player1 = relationship("User")
-    player2 = relationship("User")
+    player1 = relationship("User", foreign_keys=[player1_id])
+    player2 = relationship("User", foreign_keys=[player2_id])

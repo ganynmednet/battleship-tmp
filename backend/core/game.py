@@ -17,7 +17,7 @@ if __name__ == "__main__":
   
     move
         authorize bearer (player)
-        retrieve game from db
+        retrieve game/round from db
         move
         updated grid
         return hit

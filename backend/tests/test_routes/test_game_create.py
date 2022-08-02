@@ -3,8 +3,8 @@ import json
 
 def test_create_user(client):
     data = {
-        "name_player1": "Sergey",
-        "name_player2": "Rossman",
+        "player1_id": "Sergey",
+        "player2_id": "Rossman",
         "num_rounds": 10,
         "ships": {
             "carrier": True,
