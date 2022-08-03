@@ -41,3 +41,6 @@ class Game(Base):
 
     player1 = relationship("User", foreign_keys=[player1_id])
     player2 = relationship("User", foreign_keys=[player2_id])
+
+    def __repr__(self):
+        return f"<Game {self.id}>"

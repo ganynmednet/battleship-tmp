@@ -1,13 +1,14 @@
 import uuid
 import random
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from schemas.game import GameCreate
 from db.models.game import Game
 from db.models.round import Round
+from db.models.users import User
 
 
 def create_new_game(settings: GameCreate, db: Session):
-
     game_id = str(uuid.uuid4())
 
     game = Game(
@@ -15,7 +16,6 @@ def create_new_game(settings: GameCreate, db: Session):
         player1_id=settings.player1_id,
         player2_id=settings.player2_id,
         num_rounds=settings.num_rounds,
-        # current_round_id=current_round_id[0],
         ended=False,
         game_winner=None
 
@@ -27,17 +27,27 @@ def create_new_game(settings: GameCreate, db: Session):
         db=db
     )
 
-    # game.current_round = current_round
-
     db.add(game)
     db.commit()
     db.refresh(game)
 
-    game_response = retrieve_round(game.id, db)
-    # print("GAME RESPONSE")
-    # print(game_response[0].__dict__)
+    # get_game(game.id, db)
+
+    game_response = retrieve_game(game.id, db)
 
     return game_response
+
+
+# def get_game(game_id, db):
+#     print("GAME ID")
+#     res = db.query(Game).filter(Game.id == game_id).first()
+#
+#     print(
+#         res.id,
+#         res.player1_id,
+#         res.player2_id
+#     )
+#     print("GAME ID")
 
 
 def create_round(game_id: str, next_turn: str, db: Session):
@@ -59,33 +69,25 @@ def create_round(game_id: str, next_turn: str, db: Session):
 
 
 def retrieve_game(id: str, db: Session):
-    item = db.query(Game).filter(Game.id == id).first()
-    # item = db.query(Game)
-
-    return item
-
-
-def retrieve_round(id: str, db: Session):
     """
     https://hackersandslackers.com/sqlalchemy-data-models/
+    https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_orm_filter_operators.htm
     """
-    # print(db.query(Game, Round).join(Round).filter(Game.id == id).where(Round.game_id == Game.id).all())
 
-    print(db.query(Game).join(Round, Round.game_id == Game.id).filter(Game.id == id))
-    # item = db.query(Game, Round).join(Round).filter(Game.id == id).where(Round.game_id == Game.id).first()
-
-    # items = db.query(Game).join(Round, Round.game_id == Game.id).filter(Game.id == id).all()
-
-    # items = db.query(Game).join(Round, Round.game_id == Game.id).filter(Game.id == id).all()
+    print(db.query(Round, Game).outerjoin(Game, Round.game_id == Game.id).filter(Game.id == id))
 
     round = db.query(Round).join(Game, Round.game_id == Game.id).filter(Game.id == id).first()
 
-    # print(items)
-    # for round in items:
     game = {
         "id": round.parent_game.id,
-        "name_player1": round.parent_game.name_player1,
-        "name_player2": round.parent_game.name_player2,
+        "player1": {
+            "username": round.parent_game.player1.username,
+            "name": round.parent_game.player1.name
+        },
+        "player2": {
+            "username": round.parent_game.player2.username,
+            "name": round.parent_game.player2.name
+        },
         "num_rounds": round.parent_game.num_rounds,
         "ended": round.parent_game.ended,
         "game_winner": round.parent_game.game_winner,
@@ -100,6 +102,6 @@ def retrieve_round(id: str, db: Session):
         }
     }
 
-    print(game)
+    # print(game)
 
     return game

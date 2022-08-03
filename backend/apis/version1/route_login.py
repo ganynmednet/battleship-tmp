@@ -17,7 +17,7 @@ router = APIRouter()
 def authenticate_user(username: str, password: str, db: Session):
     user = get_user(username=username, db=db)
     # print(type(user))
-    # print(user.id)
+    # print("AUTH", user.id)
 
     if not user:
         return False
@@ -29,7 +29,7 @@ def authenticate_user(username: str, password: str, db: Session):
 @router.post("/", response_model=Token)
 def login_for_access_token(login_data: Login, db: Session = Depends(get_db)):
     user = authenticate_user(login_data.username, login_data.password, db)
-    print(user.id)
+    # print(user.id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -45,6 +45,8 @@ def login_for_access_token(login_data: Login, db: Session = Depends(get_db)):
         "user_id": user.id,
 
     }
+
+
 
 # @router.post("/token", response_model=Token)
 # def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):

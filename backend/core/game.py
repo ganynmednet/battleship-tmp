@@ -2,10 +2,15 @@
 
 if __name__ == "__main__":
     """
+    test
+        static db (yield) client call
+        modify test (functions)
+        drop db after each test
+    
     users
         create user - done
         login - done
-        authorization  - done
+        authorization  - done    
         
     create game
         create round - done
@@ -13,7 +18,7 @@ if __name__ == "__main__":
         return game with current round - done
         set state router - done
         return auth tokens with user id - done
-        link player to game model
+        link player to game model - done
   
     move
         authorize bearer (player)

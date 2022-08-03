@@ -42,6 +42,14 @@ def app() -> Generator[FastAPI, Any, None]:
     Base.metadata.drop_all(engine)
 
 
+# @pytest.fixture(scope='session', autouse=True)
+# def someobj(request):
+#     return "HELLO"
+class Players:
+    def __init__(self):
+        self.player1_id = None
+        self.player2_id = None
+
 @pytest.fixture(scope="function")
 def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     connection = engine.connect()
