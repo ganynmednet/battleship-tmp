@@ -7,71 +7,101 @@ def print_board(board):
     for i in board:
         print(" ".join(map(str, i)))
 
-    # print(board)
-    # print(numpy.array(board).transpose())
-
 
 if __name__ == "__main__":
-    """
-    generate ships
-    find location
-    place
-    
-    """
 
-    board = [[0] * 10 for _ in range(10)]
-    ships = [3, 3]
+    ships = {
+        "carrier": True,
+        "battleship": True,
+        "cruiser": True,
+        "destroyer": True
+    }
 
 
-    # print_board(board)
+    def generate_board(ships):
+        board = [[0] * 10 for _ in range(10)]
 
-    def place_ship(board, ships):
+        SHIP_CONFIG = dict(
+            carrier=dict(
+                num=1,
+                length=5
+            ),
+            battleship=dict(
+                num=2,
+                length=4
+            ),
+            cruiser=dict(
+                num=3,
+                length=3
+            ),
+            destroyer=dict(
+                num=4,
+                length=2
+            )
+        )
 
-        def place(board, ship, orientation):
-            """
-            issue with located close to each other
-            """
+        def deploy_ship(board, ship, orientation):
+            print("SHIP DEPLOYMENT")
+            locations = []
 
-            location = (random.randint(0, 10 - ship), random.randint(0, 10 - ship))
+            if orientation == 0:
+                for r in range(len(board)):
+                    for x in range(len(board[r]) - ship):
+                        if 1 not in board[r][x - 1:x + ship + 1]:
+                            # if r < len(board):
+                            #     if 1 not in board[r + 1][x - 1:x + ship + 1]:
+                            locations.append((r, x))
 
-            if orientation == 1:
+                location = random.choice(locations)
                 for i in range(ship):
+                    board[location[0]][location[1] + i] = 1
 
-                    if board[location[0]][location[1] + i] != 0:
-                        return place(board, ship, orientation)
-
-                    board[location[0]][location[1] + i] = 99
             else:
+                for r in range(len(board[0]) - ship):
+                    # print(board[r])
+                    for x in range(len(board)):
+                        if 1 not in [board[r - 1 + i + 1][x] for i in range(ship)]:
+                            locations.append((r, x))
+
+                location = random.choice(locations)
                 for i in range(ship):
+                    board[location[0] + i][location[1]] = 1
 
-                    if board[location[0] + i][location[1]] != 0:
-                        return place(board, ship, orientation)
+            return locations
 
-                    board[location[0] + i][location[1]] = 99
+        for ship_type in ships:
+            print("\nSHIP TYPE >>>>>>> ", ship_type)
+            if ship_type:
 
-            print("PLACEMENT IS DONE!")
-            return board
+                if ship_type in ["carrier", "battleship", "cruiser", "destroyer"]:
 
-        for ship in ships:
-            orientation = random.randint(0, 1)  # 1 hor, 0 vert
-            # orientation = 0
-            print(ship)
+                    for i in range(1, SHIP_CONFIG[ship_type]["num"] + 1):
+                        # if i < 2:
+                        ship = SHIP_CONFIG[ship_type]["length"]
+                        orientation = random.randint(0, 1)  # 0 hor, 1 vert
 
-            b = place(board, ship, orientation)
-            print_board(b)
+                        deploy_ship(board, ship, orientation)
 
-            # if orientation == 1:
-            #     b = place(board, ship, orientation)
-            #     print_board(b)
-            # else:
-            #
-            #     board[1][2] = 5
-            #     # print(board[2][1])
-            #     # print(board[5])
-            #     # print(board[3])
-            #
-            #     # b = place_h(board, ship, orientation)
-            #     print_board(board)
+                        print_board(board)
+
+        return board
 
 
-    place_ship(board, ships)
+    def shooter(board, shoot):
+
+        if board[shoot[0]][shoot[1]] in [1, 3]:
+
+            board[shoot[0]][shoot[1]] = 3
+
+        else:
+            board[shoot[0]][shoot[1]] = 2
+
+        print_board(board)
+
+
+    b = generate_board(ships)
+
+    print("all ready")
+    print_board(b)
+
+    shooter(b, (1, 1))

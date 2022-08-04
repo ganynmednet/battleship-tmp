@@ -50,6 +50,7 @@ class Players:
         self.player1_id = None
         self.player2_id = None
 
+
 @pytest.fixture(scope="function")
 def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     connection = engine.connect()
@@ -71,6 +72,7 @@ def client(
     """
 
     def _get_test_db():
+
         try:
             yield db_session
         finally:

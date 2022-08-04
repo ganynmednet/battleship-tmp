@@ -10,5 +10,6 @@ router = APIRouter()
 
 @router.post("/", response_model=Game)
 def create_game(settings: GameCreate, db: Session = Depends(get_db)):
+
     game = create_new_game(settings=settings, db=db)
     return game

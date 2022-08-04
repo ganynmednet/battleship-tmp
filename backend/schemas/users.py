@@ -21,3 +21,4 @@ class ShowUser(BaseModel):  # new
 
     class Config():  # tells pydantic to convert even non dict obj to json
         orm_mode = True
+

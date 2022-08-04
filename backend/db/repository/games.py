@@ -2,10 +2,34 @@ import uuid
 import random
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
-from schemas.game import GameCreate
+from schemas.game import GameCreate, Shoot
 from db.models.game import Game
 from db.models.round import Round
 from db.models.users import User
+from core.game_functions.board_generator import generate_board
+from core.game_functions.shoot import perform_shoot
+
+
+def shoot(shoot: Shoot, db: Session):
+    """
+    get game
+    get oponents board
+    make shoot
+    save board
+    respond
+    """
+    current_board = retrieve_round(shoot.game_id, db)
+
+    shoot_ = (shoot.vertical, shoot.horizontal)
+
+    # opponent's board
+    board = perform_shoot(current_board, shoot_)
+
+    # save board
+
+    # return game
+
+    return
 
 
 def create_new_game(settings: GameCreate, db: Session):
@@ -23,6 +47,7 @@ def create_new_game(settings: GameCreate, db: Session):
 
     create_round(
         game_id=game_id,
+        ships=dict(settings.ships),
         next_turn=random.choice([settings.player1_id, settings.player2_id]),
         db=db
     )
@@ -31,11 +56,15 @@ def create_new_game(settings: GameCreate, db: Session):
     db.commit()
     db.refresh(game)
 
-    # get_game(game.id, db)
-
     game_response = retrieve_game(game.id, db)
 
     return game_response
+
+
+def retrieve_round(game_id, db) -> Game:
+    _round = retrieve_game(game_id, db)
+
+    return _round.current_round
 
 
 # def get_game(game_id, db):
@@ -50,13 +79,13 @@ def create_new_game(settings: GameCreate, db: Session):
 #     print("GAME ID")
 
 
-def create_round(game_id: str, next_turn: str, db: Session):
+def create_round(game_id: str, ships: dict, next_turn: str, db: Session):
     round_id = str(uuid.uuid4())
     new_round = Round(
         id=round_id,
         game_id=game_id,
-        grid_player1=[[0] * 10 for _ in range(10)],
-        grid_player2=[[0] * 10 for _ in range(10)],
+        grid_player1=generate_board(ships),
+        grid_player2=generate_board(ships),
         next_turn=next_turn,
         ended=False,
         round_winner=None
@@ -68,15 +97,15 @@ def create_round(game_id: str, next_turn: str, db: Session):
     return round_id
 
 
-def retrieve_game(id: str, db: Session):
+def retrieve_game(game_id: str, db: Session):
     """
     https://hackersandslackers.com/sqlalchemy-data-models/
     https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_orm_filter_operators.htm
     """
 
-    print(db.query(Round, Game).outerjoin(Game, Round.game_id == Game.id).filter(Game.id == id))
+    # print(db.query(Round, Game).outerjoin(Game, Round.game_id == Game.id).filter(Game.id == game_id))
 
-    round = db.query(Round).join(Game, Round.game_id == Game.id).filter(Game.id == id).first()
+    round = db.query(Round).join(Game, Round.game_id == Game.id).filter(Game.id == game_id).first()
 
     game = {
         "id": round.parent_game.id,

@@ -16,8 +16,6 @@ router = APIRouter()
 
 def authenticate_user(username: str, password: str, db: Session):
     user = get_user(username=username, db=db)
-    # print(type(user))
-    # print("AUTH", user.id)
 
     if not user:
         return False

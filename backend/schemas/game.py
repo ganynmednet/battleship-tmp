@@ -4,6 +4,12 @@ from typing import Optional
 from schemas.users import Player
 
 
+class Shoot(BaseModel):
+    game_id: str
+    vertical: int
+    horizontal: int
+
+
 class Round(BaseModel):
     id: str
     game_id: str
