@@ -29,13 +29,6 @@ def generate_board(ships):
         )
     )
 
-    # ships = {
-    #     "carrier": True,
-    #     "battleship": True,
-    #     "cruiser": True,
-    #     "destroyer": True
-    # }
-
     def deploy_ship(board, ship, orientation):
         # print("SHIP DEPLOYMENT")
         locations = []
