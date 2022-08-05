@@ -81,7 +81,7 @@ def test_create_game(client):
     assert response.status_code == 200
     assert response.json()["access_token"]
     assert response.json()["token_type"] == "bearer"
-
+    Players.player1_token = response.json()["access_token"]
     players.player1_id = response.json()["user_id"]
 
     print("\nCREATE PLAYER 1 >>>")
@@ -106,7 +106,7 @@ def test_create_game(client):
     assert response.status_code == 200
     assert response.json()["access_token"]
     assert response.json()["token_type"] == "bearer"
-
+    Players.player2_token = response.json()["access_token"]
     players.player2_id = response.json()["user_id"]
 
     print("\nCREATE GAME >>>")
@@ -131,6 +131,27 @@ def test_create_game(client):
     assert response.json()["player1"]["name"] == "Sergey Player1"
     assert response.json()["player2"]["name"] == "Rossman Player2"
     assert response.json()["ended"] is False
+
+    Players.game_id = response.json()["id"]
+
+    data = {
+        "game_id": Players.game_id,
+        "hor": 1,
+        "ver": 1
+    }
+
+    headers = {
+        "authorization": "Bearer {}".format(Players.player1_token)
+    }
+
+    response = client.get("/shoot/{}/{}/{}".format(
+        data["game_id"],
+        data["hor"],
+        data["ver"]),
+        headers=headers
+    )
+    print("\n", json.dumps(response.json()))
+
 #
 #     # print("/game/{}/".format(response.json()["id"]))
 #

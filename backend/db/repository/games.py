@@ -18,14 +18,28 @@ def shoot(shoot: Shoot, db: Session):
     save board
     respond
     """
-    current_board = retrieve_round(shoot.game_id, db)
+    print(shoot)
+    _round = retrieve_round(shoot["game_id"], db)
 
-    shoot_ = (shoot.vertical, shoot.horizontal)
+    board: list
+
+    for player in _round["grids"]:
+        if player["user_id"] == shoot["user_id"]:
+            board = player["grid"]
+
+    shoot_ = (shoot["vertical"], shoot["horizontal"])
 
     # opponent's board
-    board = perform_shoot(current_board, shoot_)
+    board = perform_shoot(board, shoot_)
 
-    # save board
+    for player in _round["grids"]:
+        if player["user_id"] == shoot["user_id"]:
+            player["grid"] = board
+
+    # print(board)
+    print(_round["grids"])
+    print(db.query(Round).join(Game, Round.game_id == Game.id).filter(Game.id == shoot["game_id"]).update({Round.grids: _round["grids"]}))
+    db.query(Round).join(Game, Round.game_id == Game.id).filter(Game.id == shoot["game_id"]).update({Round.grids: _round["grids"]})
 
     # return game
 
@@ -63,8 +77,7 @@ def create_new_game(settings: GameCreate, db: Session):
 
 def retrieve_round(game_id, db) -> Game:
     _round = retrieve_game(game_id, db)
-
-    return _round.current_round
+    return _round["current_round"]
 
 
 # def get_game(game_id, db):
@@ -123,8 +136,16 @@ def retrieve_game(game_id: str, db: Session):
         "current_round": {
             "id": round.id,
             "game_id": round.parent_game.id,
-            "grid_player1": round.grid_player1,
-            "grid_player2": round.grid_player2,
+            "grids": [
+                {
+                    "user_id": round.parent_game.player1.id,
+                    "grid": round.grid_player1
+                },
+                {
+                    "user_id": round.parent_game.player2.id,
+                    "grid": round.grid_player2
+                }
+            ],
             "next_turn": round.next_turn,
             "round_winner": round.round_winner,
             "ended": round.ended

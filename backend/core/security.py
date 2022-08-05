@@ -2,6 +2,9 @@ from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from core.config import settings
+from functools import wraps
+from fastapi import status, HTTPException, Depends
+#
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -16,9 +19,15 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 
 def decode_access_token(token: str):
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
 
-    payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        # username: str = payload.get("sub")
+        return payload
 
-    username: str = payload.get("sub")
+    except:
 
-    return username
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+        )

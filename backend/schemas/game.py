@@ -1,20 +1,32 @@
 from pydantic import BaseModel
 from typing import Any
-from typing import Optional
+from typing import Optional, List
 from schemas.users import Player
 
 
 class Shoot(BaseModel):
     game_id: str
+    user_id: str
     vertical: int
     horizontal: int
+
+
+class Grid(BaseModel):
+    user_id: str
+    grid: list
+
+
+# class Grids(BaseModel):
+#     player1: Grid
+#     player2: Grid
 
 
 class Round(BaseModel):
     id: str
     game_id: str
-    grid_player1: list
-    grid_player2: list
+    grids: List[Grid]
+    # grid_player1: list
+    # grid_player2: list
     next_turn: str
     round_winner: Optional[str]
     ended: str
@@ -47,4 +59,3 @@ class GameCreate(BaseModel):
     player2_id: str
     num_rounds: Optional[int]
     ships: Ships
-

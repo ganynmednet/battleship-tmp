@@ -1,4 +1,3 @@
-# from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
 from datetime import timedelta
@@ -43,8 +42,6 @@ def login_for_access_token(login_data: Login, db: Session = Depends(get_db)):
         "user_id": user.id,
 
     }
-
-
 
 # @router.post("/token", response_model=Token)
 # def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):

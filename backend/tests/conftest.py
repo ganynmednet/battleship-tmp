@@ -47,8 +47,11 @@ def app() -> Generator[FastAPI, Any, None]:
 #     return "HELLO"
 class Players:
     def __init__(self):
+        self.game_id = None
         self.player1_id = None
+        self.player1_token = None
         self.player2_id = None
+        self.player2_token = None
 
 
 @pytest.fixture(scope="function")
