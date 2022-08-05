@@ -21,11 +21,19 @@ if __name__ == "__main__":
         link player to game model - done
   
     move
-        authorize bearer (player)
-        retrieve game/round from db
-        move
-        updated grid
-        return hit
+        authorize bearer (player) - done
+        retrieve game/round from db - done
+        move - done
+        updated grid - done
+        
+        update record in the DB
+        check if game still runs
+        
+        handle winning
+        
+        update next turn 
+        
+        return hit 
         switch game state
     
     round_ended:

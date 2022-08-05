@@ -37,13 +37,20 @@ def shoot(shoot: Shoot, db: Session):
             player["grid"] = board
 
     # print(board)
+
+    print("NEW GRID")
     print(_round["grids"])
-    print(db.query(Round).join(Game, Round.game_id == Game.id).filter(Game.id == shoot["game_id"]).update({Round.grids: _round["grids"]}))
-    db.query(Round).join(Game, Round.game_id == Game.id).filter(Game.id == shoot["game_id"]).update({Round.grids: _round["grids"]})
+    update_data = {
+        "data": _round["grids"]
+    }
+    print("NEW GRID")
+    # https://docs.sqlalchemy.org/en/14/tutorial/data_update.html
+    print(db.query(Round).filter(Round.id == shoot["game_id"]).update({Round.grids: update_data}, synchronize_session=False))
+    db.query(Round).filter(Round.id == shoot["game_id"]).update({Round.grids: update_data}, synchronize_session=False)
 
-    # return game
+    game = retrieve_game(shoot["game_id"], db)
 
-    return
+    return game
 
 
 def create_new_game(settings: GameCreate, db: Session):
@@ -61,6 +68,8 @@ def create_new_game(settings: GameCreate, db: Session):
 
     create_round(
         game_id=game_id,
+        player1_id=settings.player1_id,
+        player2_id=settings.player2_id,
         ships=dict(settings.ships),
         next_turn=random.choice([settings.player1_id, settings.player2_id]),
         db=db
@@ -92,13 +101,25 @@ def retrieve_round(game_id, db) -> Game:
 #     print("GAME ID")
 
 
-def create_round(game_id: str, ships: dict, next_turn: str, db: Session):
+def create_round(game_id: str, ships: dict, next_turn: str, player1_id:str, player2_id:str, db: Session):
     round_id = str(uuid.uuid4())
     new_round = Round(
         id=round_id,
         game_id=game_id,
         grid_player1=generate_board(ships),
         grid_player2=generate_board(ships),
+        grids={
+            "data": [
+                {
+                    "user_id": player1_id,
+                    "grid": generate_board(ships)
+                },
+                {
+                    "user_id": player2_id,
+                    "grid": generate_board(ships)
+                }
+            ]
+        },
         next_turn=next_turn,
         ended=False,
         round_winner=None
@@ -120,6 +141,8 @@ def retrieve_game(game_id: str, db: Session):
 
     round = db.query(Round).join(Game, Round.game_id == Game.id).filter(Game.id == game_id).first()
 
+    # print([g for g in round.grids["data"]])
+    # grids = []
     game = {
         "id": round.parent_game.id,
         "player1": {
@@ -136,16 +159,17 @@ def retrieve_game(game_id: str, db: Session):
         "current_round": {
             "id": round.id,
             "game_id": round.parent_game.id,
-            "grids": [
-                {
-                    "user_id": round.parent_game.player1.id,
-                    "grid": round.grid_player1
-                },
-                {
-                    "user_id": round.parent_game.player2.id,
-                    "grid": round.grid_player2
-                }
-            ],
+            # "grids": [
+            #     {
+            #         "user_id": round.parent_game.player1.id,
+            #         "grid": round.grid_player1
+            #     },
+            #     {
+            #         "user_id": round.parent_game.player2.id,
+            #         "grid": round.grid_player2
+            #     }
+            # ],
+            "grids": round.grids["data"],
             "next_turn": round.next_turn,
             "round_winner": round.round_winner,
             "ended": round.ended

@@ -11,6 +11,7 @@ class Round(Base):
     game_id = Column(Integer, ForeignKey("game.id"))
     grid_player1 = Column(JSON, nullable=False)
     grid_player2 = Column(JSON, nullable=False)
+    grids = Column(JSON, nullable=False)
     next_turn = Column(String, nullable=True)
     round_winner = Column(String, nullable=True)
     ended = Column(Boolean(), default=False)
