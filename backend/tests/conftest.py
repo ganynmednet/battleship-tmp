@@ -42,9 +42,6 @@ def app() -> Generator[FastAPI, Any, None]:
     Base.metadata.drop_all(engine)
 
 
-# @pytest.fixture(scope='session', autouse=True)
-# def someobj(request):
-#     return "HELLO"
 class Players:
     def __init__(self):
         self.game_id = None
