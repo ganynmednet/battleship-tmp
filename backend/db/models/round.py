@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey, ARRAY, TypeDecorator, types, JSON
-# from sqlalchemy import JSON, String, TypeDecorator
 from sqlalchemy.orm import relationship
 from db.base_class import Base
 import json

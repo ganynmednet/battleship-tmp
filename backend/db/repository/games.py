@@ -12,11 +12,6 @@ from core.game_functions.shoot import perform_shoot
 
 def shoot(shoot: Shoot, db: Session):
     """
-    get game
-    get opponents board
-    make shoot
-    save board
-    respond
     """
     print(shoot)
     _round = retrieve_round(shoot["game_id"], db)

@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-
 from apis.version1 import route_game
 from apis.version1 import route_start
 from apis.version1 import route_users

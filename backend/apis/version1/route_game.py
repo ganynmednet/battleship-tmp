@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from schemas.game import Game
 from sqlalchemy.orm import Session
-
 from db.session import get_db
 from db.repository.games import retrieve_game
 

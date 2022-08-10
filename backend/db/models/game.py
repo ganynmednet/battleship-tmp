@@ -28,8 +28,6 @@ class Json(TypeDecorator):
 
 class Game(Base):
     """
-    https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html
-    https://hackersandslackers.com/sqlalchemy-data-models/
     """
     __tablename__ = 'game'
     id = Column(String, primary_key=True, index=True)

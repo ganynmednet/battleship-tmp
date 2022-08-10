@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
 from schemas.game import GameCreate, Game
 from db.session import get_db
 from db.repository.games import create_new_game
