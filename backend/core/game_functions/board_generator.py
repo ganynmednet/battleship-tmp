@@ -30,15 +30,12 @@ def generate_board(ships):
     )
 
     def deploy_ship(board, ship, orientation):
-        # print("SHIP DEPLOYMENT")
         locations = []
 
         if orientation == 0:
             for r in range(len(board)):
                 for x in range(len(board[r]) - ship):
                     if 1 not in board[r][x - 1:x + ship + 1]:
-                        # if r < len(board):
-                        #     if 1 not in board[r + 1][x - 1:x + ship + 1]:
                         locations.append((r, x))
 
             location = random.choice(locations)
@@ -47,7 +44,6 @@ def generate_board(ships):
 
         else:
             for r in range(len(board[0]) - ship):
-                # print(board[r])
                 for x in range(len(board)):
                     if 1 not in [board[r - 1 + i + 1][x] for i in range(ship)]:
                         locations.append((r, x))
@@ -63,7 +59,6 @@ def generate_board(ships):
         if ship_type:
 
             for i in range(1, SHIP_CONFIG[ship_type]["num"] + 1):
-                # if i < 2:
                 ship = SHIP_CONFIG[ship_type]["length"]
                 orientation = random.randint(0, 1)  # 0 hor, 1 vert
 

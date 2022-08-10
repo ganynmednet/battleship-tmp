@@ -2,10 +2,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from core.config import settings
-from functools import wraps
 from fastapi import status, HTTPException, Depends
-#
-
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
@@ -22,7 +19,6 @@ def decode_access_token(token: str):
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
 
-        # username: str = payload.get("sub")
         return payload
 
     except:

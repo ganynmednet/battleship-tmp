@@ -7,18 +7,17 @@ class Player(BaseModel):
     name: str
 
 
-# properties required during user creation
 class UserCreate(BaseModel):
     username: str
     password: str
     name: str
 
 
-class ShowUser(BaseModel):  # new
+class ShowUser(BaseModel):
     username: str
     name: str
     is_active: bool
 
-    class Config():  # tells pydantic to convert even non dict obj to json
+    class Config():
         orm_mode = True
 

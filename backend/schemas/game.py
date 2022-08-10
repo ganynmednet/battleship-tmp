@@ -43,7 +43,7 @@ class Game(BaseModel):
     ended: bool
     game_winner: Optional[str]
 
-    class Config():  # tells pydantic to convert even non dict obj to json
+    class Config():
         orm_mode = True
 
 

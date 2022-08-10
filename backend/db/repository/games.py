@@ -13,7 +13,7 @@ from core.game_functions.shoot import perform_shoot
 def shoot(shoot: Shoot, db: Session):
     """
     get game
-    get oponents board
+    get opponents board
     make shoot
     save board
     respond
@@ -36,9 +36,7 @@ def shoot(shoot: Shoot, db: Session):
         if player["user_id"] == shoot["user_id"]:
             player["grid"] = board
 
-    # print(board)
-
-    print("NEW GRID")
+    # print(board)    print("NEW GRID")
     print(_round["grids"])
     update_data = {
         "data": _round["grids"]
