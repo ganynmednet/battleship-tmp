@@ -1,7 +1,4 @@
-from sqlalchemy.orm import Session
 from db.models.users import User
-from jose import JWTError, jwt
-from schemas.tokens import Token
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from fastapi import status
